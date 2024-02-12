@@ -26,7 +26,7 @@ const createPostController = async (req, res) => {
         const newPost = await postModel.create({
             name,
             prompt,
-            photo: result.url
+            photo: result.secure_url
         });
         res.status(200).json({
             success: true,
