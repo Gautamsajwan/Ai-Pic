@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Homemade+Apple&family=Inter:wght@400;600;700&family=Montserrat:wght@400;500;600;700;800&family=Sacramento&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@layer base {
+  .navButton {
+    @apply py-[10px] px-3 w-[120px] font-bold text-white bg-[#2b313b] hover:bg-[#6469ff] relative active:scale-95 transition-all duration-300 ease-in-out
+  }
+  
+  .downloadBtn {
+    @apply text-[27px] text-white rounded-full hover:bg-white hover:text-gray-900 transition-all ease-in-out
+  }
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #F2FAFF;
+}
+
+@media screen and (min-width: 480px) {
+  .card:nth-child(7n + 1) {
+    grid-column: auto/span 2;
+    grid-row: auto/span 2;
+  }
+}
+
+.prompt::-webkit-scrollbar {
+  width: 5px;
+}
+
+.prompt::-webkit-scrollbar-thumb {
+  background-color: #6b6c6dd2;
+  border-radius: 5px;
+}
