@@ -10,7 +10,7 @@ const app = express()
 
 // middlewares
 app.use(cors({
-    origin: ['https://ai-image-generator-frontend-amber.vercel.app'],
+    origin: [process.env.CORS_ORIGIN],
     methods: ["POST", "GET", "PUT", "DELETE"],
 }))
 app.use(express.json({limit: '50mb'}))
