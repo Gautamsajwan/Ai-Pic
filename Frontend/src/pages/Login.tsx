@@ -57,8 +57,8 @@ function Login() {
   return (
     <div className="text-white relative w-full h-screen overflow-hidden font-montserrat flex flex-col justify-center items-center">
       <img className="w-44" src={logo} alt="aipic logo" />
-      <div className="mt-1 p-8 rounded-lg bg-gray-800/70">
-        <form className="flex flex-col gap-2 w-[500px]">
+      <div className="mt-1 p-8 w-[90%] sm:w-fit rounded-lg bg-gray-800/70">
+        <form className="w-full sm:w-[500px] flex flex-col gap-2">
           <label htmlFor="email" className="font-bold pl-1 text-lg">Email</label>
           <input type="text" id="email" value={email} onChange={(e) => setEmail(e.target.value)} className="textField" placeholder='enter your email' />
 

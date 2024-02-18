@@ -44,7 +44,7 @@ const createUserHandler = async (req: Request, res: Response) => {
 
         const cookieOptions = {
             expires: expirationDate,
-            sameSite: true, // set it to Lax while running in local host and none in production
+            sameSite: false, // set it to Lax while running in local host and none in production
             secure: true, // set it to false while running in local host and true in production
             httpOnly: false,
         };
@@ -60,7 +60,7 @@ const createUserHandler = async (req: Request, res: Response) => {
     } catch (err) {
         return res.status(500).json({
             success: false,
-            msg: "Internal Server Error",
+            message: "Internal Server Error",
         });
     }
 }
@@ -109,7 +109,7 @@ const verifyUserHandler = async (req: Request, res: Response) => {
 
         const cookieOptions = {
             expires: expirationDate,
-            sameSite: true, // set it to Lax while running in local host and none in production
+            sameSite: false, // set it to Lax while running in local host and none in production
             secure: true, // set it to false while running in local host and true in production
             httpOnly: false,
         };
@@ -138,7 +138,7 @@ const logoutHandler = (req: Request, res: Response) => {
         const cookieOptions = {
             expires: expirationDate,
             sameSite: false,
-            secure: false,
+            secure: true,
             httpOnly: false,
         };
 
