@@ -1,24 +1,40 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import Home from './pages/Home';
-import CreatePost from './pages/CreatePost';
+import { Home, SignUp, Login, CreatePost } from './pages'
+import { Footer } from './components';
 
 type Props = {}
 
 function App({}: Props) {
+  const location = useLocation()
+
+  const navbarPaths = ['/', '/create-post']
+
+  const showNavbar = navbarPaths.includes(location.pathname)
+
   return (
-    <BrowserRouter>
-      <header>
-        <Navbar />
-      </header>
+    <>
+      {showNavbar && (
+        <header>
+          <Navbar />
+        </header>
+      )}
 
       <main>
         <Routes>
           <Route path='/' element={<Home />}/>
           <Route path='/create-post' element={<CreatePost />}/>
+          <Route path='/signUp' element={<SignUp />}/>
+          <Route path='/login' element={<Login />}/>
         </Routes>
       </main>
-    </BrowserRouter>
+
+      {showNavbar && (
+        <footer>
+          <Footer />
+        </footer>
+      )}
+    </>
   )
 }
 

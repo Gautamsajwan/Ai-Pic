@@ -1,14 +1,18 @@
-@import url('https://fonts.googleapis.com/css2?family=Homemade+Apple&family=Inter:wght@400;600;700&family=Montserrat:wght@400;500;600;700;800&family=Sacramento&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=PT+Sans+Narrow:wght@400;700&family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 @layer base {
   .navButton {
-    @apply py-[10px] px-3 w-[120px] font-bold text-white bg-[#2b313b] hover:bg-[#6469ff] relative active:scale-95 transition-all duration-300 ease-in-out
+    @apply py-[10px] px-3 rounded-lg w-[125px] font-bold text-white bg-[#2b313b] hover:bg-[#6469ff] active:scale-95 transition-all duration-300 ease-in-out
   }
   
   .downloadBtn {
     @apply text-[27px] text-white rounded-full hover:bg-white hover:text-gray-900 transition-all ease-in-out
+  }
+
+  .textField {
+    @apply p-2 text-black font-semibold indent-2 outline-none border-[5px] border-[rgb(65,65,65)] rounded-lg bg-[rgb(231,231,231)]
   }
 }
 
@@ -36,4 +40,26 @@ body {
 .prompt::-webkit-scrollbar-thumb {
   background-color: #6b6c6dd2;
   border-radius: 5px;
+}
+
+.exceeding-dark::-webkit-scrollbar {
+  width: 10px;
+}
+
+.exceeding-dark::-webkit-scrollbar-thumb {
+  background-color: #bebfc0ce;
+  border-radius: 7px;
+}
+
+.exceeding-light::-webkit-scrollbar {
+  width: 10px;
+}
+
+.exceeding-light::-webkit-scrollbar-thumb {
+  background-color: #e6e6e6;
+  border-radius: 7px;
+}
+
+.textField::placeholder {
+  color: rgb(112, 112, 112);
 }

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Loader, FormField, RenderCards } from "../components";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 type Props = {};
 
@@ -12,12 +13,6 @@ type Post = {
 }
 
 function Home({}: Props) {
-  const [loading, setloading] = useState<boolean>(false);
-  const [allPosts, setallPosts] = useState<Post[]>([]);
-  const [searchText, setsearchText] = useState<string>('');
-  const [searchTimeoutID, setSearchTimeoutID] = useState<number | null>(null);
-  const [searchedResults, setSearchedResults] = useState<Post[]>([]);
-
   useEffect(() => {
     const getAllPosts = async() => {
       try {
@@ -27,12 +22,15 @@ function Home({}: Props) {
           headers: {
             'Content-Type': 'application/json'
           },
+          credentials: 'include'
         })
         
         const result = await response.json()
         
         if(!result.success) {
-          return toast.error(result.msg)
+          navigate('/login')
+          toast.error(result.msg)
+          return
         }
   
         setallPosts(result.data.reverse())
@@ -46,6 +44,13 @@ function Home({}: Props) {
 
     getAllPosts()
   },[])
+
+  const navigate = useNavigate()
+  const [loading, setloading] = useState<boolean>(false);
+  const [allPosts, setallPosts] = useState<Post[]>([]);
+  const [searchText, setsearchText] = useState<string>('');
+  const [searchTimeoutID, setSearchTimeoutID] = useState<number | null>(null);
+  const [searchedResults, setSearchedResults] = useState<Post[]>([]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if(searchTimeoutID) {
@@ -63,15 +68,15 @@ function Home({}: Props) {
   }
 
   return (
-    <section className="font-montserrat max-w-7xl mx-auto px-4 py-3">
+    <section className="min-h-[80vh] font-montserrat max-w-7xl mx-auto px-4 py-3">
       <div>
-        <h1 className="font-extrabold text-[36px]">The Community ShowCase</h1>
-        <p className="mt-1 text-[#666e75] text-sm font-medium max-w-[700px] bg-gray-200 rounded-full px-3 py-1">
+        <h1 className="font-bold drop-shadow-lg font-spacemono text-4xl md:text-5xl mt-5 mb-2">The Community ShowCase</h1>
+        <p className="mt-1 text-[#666e75] text-sm font-medium max-w-[700px] bg-gray-200 rounded-md px-3 py-1">
           Browse through a collection of imaginative and visually stunning images
         </p>
       </div>
 
-      <div className="mt-16">
+      <div className="mt-14">
         <FormField
           labelName="Search posts"
           type="text"
@@ -94,7 +99,7 @@ function Home({}: Props) {
                 Showing results for <span>{searchText}</span>
               </h2>
             )}
-            <div className="grid lg:grid-cols-4 sm:grid-cols-3 xs:grid-cols-2 grid-cols-1 gap-3">
+            <div className="mb-5 px-3 py-3 bg-[rgb(236,236,238)] rounded-2xl grid lg:grid-cols-4 sm:grid-cols-3 xs:grid-cols-2 grid-cols-1 gap-3 max-h-screen overflow-auto exceeding-dark">
               {searchText ? (
                 <RenderCards data={searchedResults} title="no search results found" />
               ) : (

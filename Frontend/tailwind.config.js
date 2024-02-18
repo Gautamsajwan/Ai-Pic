@@ -10,9 +10,9 @@ export default {
       },
       fontFamily: {
         montserrat: "'Montserrat', sans-serif",
-        inter: "'Inter', sans-serif",
-        homic: "'Homemade Apple', cursive",
-        sacramento: "'Sacramento', cursive"
+        spacemono: "'Space Mono', monospace",
+        ptsans: "'PT sans', sans-serif",
+        ptsansnarrow: "'PT Sans Narrow', sans-serif",
       },
       boxShadow: {
         card: '0 0 1px 0 rgba(189,192,207,0.06),0 10px 16px -1px rgba(189,192,207,0.2)',

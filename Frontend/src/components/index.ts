@@ -2,6 +2,7 @@ import Card from './Card.tsx'
 import FormField from './FormField.tsx'
 import Loader from './Loader.tsx'
 import RenderCards from './RenderCards.tsx'
-import NavButton from './NavButton.tsx'
+import Footer from './Footer.tsx'
+import Model from './Model.tsx'
 
-export {Card, FormField, Loader, RenderCards, NavButton}
+export {Card, FormField, Loader, RenderCards, Footer, Model}
