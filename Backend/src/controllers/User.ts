@@ -45,8 +45,9 @@ const createUserHandler = async (req: Request, res: Response) => {
             httpOnly: true,
             secure: true,
             path: "/",
+            domain: ".vercel.app",
             samesite: "none",
-            maxAge: 3600000
+            maxAge: 86400000
         };
         res.cookie("UserCookie", authToken, cookieOptions)
 
@@ -102,8 +103,9 @@ const verifyUserHandler = async (req: Request, res: Response) => {
             httpOnly: true,
             secure: true,
             path: "/",
+            domain: ".vercel.app",
             samesite: "none",
-            maxAge: 3600000
+            maxAge: 86400000
         };
         res.cookie("UserCookie", authToken, cookieOptions)
 
