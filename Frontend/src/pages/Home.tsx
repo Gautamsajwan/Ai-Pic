@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Loader, FormField, RenderCards } from "../components";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 type Props = {};
 
@@ -27,11 +27,11 @@ function Home({}: Props) {
         
         const result = await response.json()
         
-        if(response.status === 401) {
-          navigate('/login')
-          toast.error(result.message)
-          return
-        }
+        // if(response.status === 401) {
+        //   navigate('/login')
+        //   toast.error(result.message)
+        //   return
+        // }
         if(response.status === 500) {
           toast.error(result.message)
           return
@@ -48,7 +48,7 @@ function Home({}: Props) {
     getAllPosts()
   },[])
 
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
   const [loading, setloading] = useState<boolean>(false);
   const [allPosts, setallPosts] = useState<Post[]>([]);
   const [searchText, setsearchText] = useState<string>('');
