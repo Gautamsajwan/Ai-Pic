@@ -32,6 +32,7 @@ const createUserHandler = async (req, res) => {
         };
         let authToken = jwt.sign(payload, jwtSecret); // will return the created token
         const cookieOptions = {
+            domain: 'https://ai-image-generator-frontend-amber.vercel.app',
             expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
             secure: true,
             httpOnly: true
@@ -81,6 +82,7 @@ const verifyUserHandler = async (req, res) => {
         let authToken = jwt.sign(payload, jwtSecret);
         const expirationDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
         const cookieOptions = {
+            domain: 'https://ai-image-generator-frontend-amber.vercel.app',
             expires: expirationDate,
             secure: true,
             httpOnly: true
@@ -104,7 +106,7 @@ const logoutHandler = (req, res) => {
         console.log("LogOut Endpoint");
         const cookieOptions = {
             expires: new Date(Date.now() - 1),
-            secure: false,
+            secure: true,
             httpOnly: true,
         };
         return res.clearCookie("UserCookie", cookieOptions).status(200).json({
