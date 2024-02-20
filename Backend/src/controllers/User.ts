@@ -45,9 +45,7 @@ const createUserHandler = async (req: Request, res: Response) => {
             httpOnly: true,
             secure: true,
             path: "/",
-            domain: ".vercel.app",
             samesite: "none",
-            maxAge: 86400000
         };
         res.cookie("UserCookie", authToken, cookieOptions)
 
@@ -103,9 +101,7 @@ const verifyUserHandler = async (req: Request, res: Response) => {
             httpOnly: true,
             secure: true,
             path: "/",
-            domain: ".vercel.app",
             samesite: "none",
-            maxAge: 86400000
         };
         res.cookie("UserCookie", authToken, cookieOptions)
 
@@ -135,7 +131,7 @@ const logoutHandler = (req: Request, res: Response) => {
         };
 
         return res.clearCookie("UserCookie", cookieOptions).status(200).json({
-            success: true, 
+            success: true,
             message: "Successfully logged Out"
         })
     } catch(error) {
