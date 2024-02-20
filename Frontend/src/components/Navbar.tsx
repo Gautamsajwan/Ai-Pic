@@ -17,7 +17,7 @@ function Navbar({}: Props) {
   const logoutHandler = async() => {
     try {
       const response = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/logout`, {
-        method: 'GET',
+        method: 'POST',
         headers: {
           'content-type': 'application/json'
         },
@@ -30,7 +30,7 @@ function Navbar({}: Props) {
         return toast.error(result.message)
       }
 
-      toast.success(result.message)
+      toast.info(result.message)
       nav("/login");
     } catch(error: any) {
       toast.error('Internal Server Error: ',error.message)

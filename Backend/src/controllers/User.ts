@@ -45,7 +45,8 @@ const createUserHandler = async (req: Request, res: Response) => {
             httpOnly: true,
             secure: true,
             path: "/",
-            samesite: "none"
+            samesite: "none",
+            maxAge: 3600000
         };
         res.cookie("UserCookie", authToken, cookieOptions)
 
@@ -101,7 +102,8 @@ const verifyUserHandler = async (req: Request, res: Response) => {
             httpOnly: true,
             secure: true,
             path: "/",
-            samesite: "none"
+            samesite: "none",
+            maxAge: 3600000
         };
         res.cookie("UserCookie", authToken, cookieOptions)
 

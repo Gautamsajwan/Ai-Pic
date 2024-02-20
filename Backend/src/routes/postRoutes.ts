@@ -4,7 +4,7 @@ import fetchUser from '../middlewares/jwt.js'
 
 const router = express.Router()
 
-router.get('/allPosts', fetchUser, getAllPostsController)
+router.post('/allPosts', fetchUser, getAllPostsController)
 
 router.post('/createPost', fetchUser, createPostController)
 

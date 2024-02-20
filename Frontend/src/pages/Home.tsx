@@ -18,7 +18,7 @@ function Home({}: Props) {
       try {
         setloading(true)
         const response = await fetch(`${import.meta.env.VITE_BASE_URL}/post/allPosts`, {
-          method: 'GET',
+          method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
