@@ -11,7 +11,7 @@ const getAllPostsController = async (req, res) => {
     catch (err) {
         res.status(500).json({
             success: false,
-            msg: 'Fetching posts failed, refresh the page and try again'
+            msg: 'Failed to fetch posts, refresh the page and try again'
         });
     }
 };

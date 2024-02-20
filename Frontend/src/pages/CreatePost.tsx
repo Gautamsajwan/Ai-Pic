@@ -24,9 +24,13 @@ function CreatePost({}: Props) {
 
         const result = await response.json()
 
-        if(!result.success) {
-          toast.error(result.message)
+        if(response.status === 401) {
           navigate('/login')
+          toast.error(result.message)
+          return
+        }
+        if(response.status === 500) {
+          toast.error(result.message)
           return
         }
       } catch (error: any) {

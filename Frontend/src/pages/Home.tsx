@@ -27,14 +27,17 @@ function Home({}: Props) {
         
         const result = await response.json()
         
-        if(!result.success) {
+        if(response.status === 401) {
           navigate('/login')
-          toast.error(result.msg)
+          toast.error(result.message)
+          return
+        }
+        if(response.status === 500) {
+          toast.error(result.message)
           return
         }
   
         setallPosts(result.data.reverse())
-        console.log(result.data)
       } catch (err: any) {
         toast.error(err.message)
       } finally {

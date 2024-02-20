@@ -2,21 +2,20 @@ import jwt from 'jsonwebtoken'
 import { Request, Response, NextFunction } from 'express'
 
 const fetchUser = (req: Request, res: Response, next: NextFunction) => {
-    const accessToken = req.cookies && req.cookies.UserCookie
-    console.log("Middleware for checking user: ", accessToken)
+    const authToken = req.cookies && req.cookies.UserCookie
+    // console.log("Middleware for checking user: ", authToken)
 
-    if (!accessToken) {
-        return res.status(400).json({
+    if (!authToken) {
+        return res.status(401).json({
             success: false,
-            message: "user isnt authenticated",
+            message: "please login before continuing",
         })
     }
 
     try {
-        const jwtSecret = process.env.JWT_SECRET || ''
-        const data = jwt.verify(accessToken, jwtSecret, {complete: true});
-        console.log("token1 ", data);
-        // req.user = data.userId
+        const jwtSecret = process.env.JWT_SECRET
+        jwt.verify(authToken, jwtSecret); // throws an error if jwt token is tampered
+        
         next()
     } catch (err) {
         return res.status(401).json({
