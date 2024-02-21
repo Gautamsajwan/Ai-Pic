@@ -27,7 +27,9 @@ function Navbar({}: Props) {
       const result = await response.json()
 
       if(!result.success) {
-        return toast.error(result.message)
+        toast.info(result.message)
+        nav("/login")
+        return
       }
 
       toast.info(result.message)

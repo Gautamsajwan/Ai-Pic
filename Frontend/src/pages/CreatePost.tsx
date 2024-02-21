@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from 'react'
+import { FormEvent, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getRandomPrompt } from '../utils'
 import { FormField } from '../components'
@@ -11,36 +11,6 @@ import animation4 from '../lotties/Animation4.json'
 type Props = {}
 
 function CreatePost({}: Props) {
-  useEffect(() => {
-    const verifyUser = async() => {
-      try {
-        const response = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/checkLoginStatus`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          credentials: 'include'
-        })
-
-        const result = await response.json()
-
-        if(response.status === 401) {
-          navigate('/login')
-          toast.error(result.message)
-          return
-        }
-        if(response.status === 500) {
-          toast.error(result.message)
-          return
-        }
-      } catch (error: any) {
-        toast.error(error.message)
-      }
-    }
-
-    verifyUser()
-  }, [])
-  
   const [form, setForm] = useState({
     name: '',
     prompt: '',
@@ -106,7 +76,7 @@ function CreatePost({}: Props) {
       const result = await response.json()
 
       if(!result.success) {
-        return toast.error(result.msg)
+        return toast.error(result.message)
       } else {
         toast.success('image shared with community')
       }

@@ -4,7 +4,7 @@
 @tailwind utilities;
 @layer base {
   .navButton {
-    @apply py-[10px] px-3 rounded-lg w-[125px] font-bold text-white bg-[#2b313b] hover:bg-[#6469ff] active:scale-95 transition-all duration-300 ease-in-out
+    @apply py-[10px] px-2 sm:px-3 rounded-lg w-[100px] text-[13px] sm:text-base sm:w-[125px] font-bold text-white bg-[#2b313b] hover:bg-[#6469ff] active:scale-95 transition-all duration-300 ease-in-out
   }
   
   .downloadBtn {

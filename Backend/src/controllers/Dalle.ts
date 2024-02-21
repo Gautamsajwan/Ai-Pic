@@ -25,7 +25,7 @@ const generateImageController = async (req: Request, res: Response): Promise<voi
     console.error(err);
     res.status(500).json({
       success: false,
-      msg: "internal server error",
+      message: "internal server error",
     });
   }
 };

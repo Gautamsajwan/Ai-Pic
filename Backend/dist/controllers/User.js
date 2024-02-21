@@ -32,7 +32,7 @@ const createUserHandler = async (req, res) => {
         };
         let authToken = jwt.sign(payload, jwtSecret); // will return the created token
         const cookieOptions = {
-            expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+            expires: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
             httpOnly: true,
             secure: true,
             path: "/",
@@ -82,7 +82,7 @@ const verifyUserHandler = async (req, res) => {
         };
         let authToken = jwt.sign(payload, jwtSecret);
         const cookieOptions = {
-            expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+            expires: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
             httpOnly: true,
             secure: true,
             path: "/",
@@ -107,7 +107,7 @@ const logoutHandler = (req, res) => {
     if (!authToken) {
         return res.status(401).json({
             success: false,
-            message: "User already logged out",
+            message: "User successfully logged out",
         });
     }
     try {
