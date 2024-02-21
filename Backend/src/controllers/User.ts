@@ -119,6 +119,15 @@ const verifyUserHandler = async (req: Request, res: Response) => {
 }
 
 const logoutHandler = (req: Request, res: Response) => {
+    const authToken = req.cookies && req.cookies.UserCookie
+
+    if (!authToken) {
+        return res.status(401).json({
+            success: false,
+            message: "User already logged out",
+        })
+    }
+
     try {
         console.log("LogOut Endpoint")
 
