@@ -1,11 +1,15 @@
-import express from 'express';
-import 'dotenv/config';
-import { createUserHandler, loginStatusHandler, logoutHandler, verifyUserHandler } from '../controllers/User.js';
-const router = express.Router();
-router.post('/createUser', createUserHandler);
-router.post('/verifyUser', verifyUserHandler);
-// the below function is required for checking the login status or securing the path at times when we are not calling an api at the first render or useEffect. For example in /dashboard endpoint where at the time of loading the page we are calling the api which is using fetchUser middleware for checking the login status but in the dropZone component we arent calling any api at the first render which is why we need to use the below function and use it in use effect
-router.post("/checkLoginStatus", loginStatusHandler);
-router.post("/logout", logoutHandler);
-export default router;
-//# sourceMappingURL=authRoutes.js.map
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+require("dotenv/config");
+const User_1 = require("../controllers/User");
+const router = express_1.default.Router();
+router.post('/signup', User_1.createUserHandler);
+router.post('/login', User_1.verifyUserHandler);
+// the below function is required for checking the login status or securing the path at times when we are not calling an api at the first render or useEffect.
+router.post("/checkAuthStatus", User_1.loginStatusHandler);
+router.post("/logout", User_1.logoutHandler);
+exports.default = router;

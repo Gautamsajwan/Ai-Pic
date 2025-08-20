@@ -1,6 +1,6 @@
 import { Route, Routes, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import { Home, SignUp, Login, CreatePost } from './pages'
+import { Home, SignUp, Login, CreatePost, PersonalProfile } from './pages'
 import { Footer } from './components';
 
 type Props = {}
@@ -8,9 +8,11 @@ type Props = {}
 function App({}: Props) {
   const location = useLocation()
 
-  const navbarPaths = ['/', '/create-post']
+  const navbarPaths = ['/', '/create-post','/my-profile']
+  const footerPaths = ['/', '/create-post']
 
   const showNavbar = navbarPaths.includes(location.pathname)
+  const showFooter = footerPaths.includes(location.pathname)
 
   return (
     <>
@@ -26,10 +28,11 @@ function App({}: Props) {
           <Route path='/create-post' element={<CreatePost />}/>
           <Route path='/signUp' element={<SignUp />}/>
           <Route path='/login' element={<Login />}/>
+          <Route path='/my-profile' element={<PersonalProfile />}/>
         </Routes>
       </main>
 
-      {showNavbar && (
+      {showFooter && (
         <footer>
           <Footer />
         </footer>

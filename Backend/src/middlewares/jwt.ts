@@ -14,10 +14,15 @@ const fetchUser = (req: Request, res: Response, next: NextFunction) => {
 
     try {
         const jwtSecret = process.env.JWT_SECRET
+        
+        if (!jwtSecret) {
+            throw new Error("JWT secret is not defined")
+        }
+
         jwt.verify(authToken, jwtSecret); // throws an error if jwt token is tampered
         
         next()
-    } catch (err) {
+    } catch (err: any) {
         return res.status(401).json({
             sucess: false,
             message: err.message,

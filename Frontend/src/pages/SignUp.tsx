@@ -24,7 +24,7 @@ function SignUp() {
     e.preventDefault();
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/createUser`, {
+      const response = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/signup`, {
         method: "POST",
         headers: {
           "content-type": "application/json",
@@ -61,7 +61,7 @@ function SignUp() {
         <form className="w-full sm:w-[500px] flex flex-col gap-2">
           <label htmlFor="email" className="font-bold pl-1 text-lg">Email</label>
           <input
-            type="text"
+            type="email"
             id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}

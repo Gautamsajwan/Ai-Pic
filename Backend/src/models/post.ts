@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 
 const postSchema = new mongoose.Schema({
-    name: {
+    userName: {
         type: String,
         required: [true, "please enter your name"]
     },
@@ -9,12 +9,19 @@ const postSchema = new mongoose.Schema({
         type: String,
         required: [true, "please enter a prompt"]
     },
-    photo: {
+    photoUrl: {
         type: String,
-        required: [true, "please generate a photo before posting"]
-    }
+        required: true
+    },
+    photoId: {
+        type: String,
+        required: true
+    },
+    tags: [{
+        type: String,
+    }]
 })
 
-const postModel = mongoose.model('post', postSchema)
+const PostModel = mongoose.model('post', postSchema)
  
-export default postModel
+export default PostModel

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "name": "AI image generator",
+  "name": "Ai_Pic",
   "builds": [
     {
       "src": "dist/index.js",

@@ -1,8 +1,23 @@
-import User from '../models/user.js';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import 'dotenv/config';
-const createUserHandler = async (req, res) => {
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.loginStatusHandler = exports.logoutHandler = exports.verifyUserHandler = exports.createUserHandler = void 0;
+const user_1 = __importDefault(require("../models/user"));
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+require("dotenv/config");
+const createUserHandler = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { username, email, password } = req.body;
     if (!username || !email || !password) {
         return res.status(500).json({
@@ -10,7 +25,7 @@ const createUserHandler = async (req, res) => {
             message: "Please fill all the details before submitting",
         });
     }
-    let already_a_user = await User.findOne({ email: email });
+    let already_a_user = yield user_1.default.findOne({ email: email });
     if (already_a_user) {
         return res.status(400).json({
             success: false,
@@ -18,25 +33,28 @@ const createUserHandler = async (req, res) => {
         });
     }
     try {
-        const salt = bcrypt.genSaltSync(10);
-        const encryptedPassword = await bcrypt.hash(password, salt);
-        const newUser = await User.create({
+        const salt = bcryptjs_1.default.genSaltSync(10);
+        const encryptedPassword = yield bcryptjs_1.default.hash(password, salt);
+        const newUser = yield user_1.default.create({
             username,
             email,
             password: encryptedPassword,
         });
         console.log(newUser);
         const jwtSecret = process.env.JWT_SECRET;
+        if (!jwtSecret) {
+            throw new Error("JWT_SECRET is not defined in environment variables");
+        }
         const payload = {
             userId: newUser._id
         };
-        let authToken = jwt.sign(payload, jwtSecret); // will return the created token
+        let authToken = jsonwebtoken_1.default.sign(payload, jwtSecret); // jwt.sign method will return the created token
         const cookieOptions = {
             expires: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
             httpOnly: true,
-            secure: true,
+            secure: false,
             path: "/",
-            samesite: "none",
+            samesite: "Lax",
         };
         res.cookie("UserCookie", authToken, cookieOptions);
         return res.status(200).json({
@@ -51,8 +69,9 @@ const createUserHandler = async (req, res) => {
             message: "Internal Server Error",
         });
     }
-};
-const verifyUserHandler = async (req, res) => {
+});
+exports.createUserHandler = createUserHandler;
+const verifyUserHandler = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = req.body;
     if (!email || !password) {
         return res.status(500).json({
@@ -61,14 +80,14 @@ const verifyUserHandler = async (req, res) => {
         });
     }
     try {
-        const already_a_user = await User.findOne({ email: email });
+        const already_a_user = yield user_1.default.findOne({ email: email });
         if (!already_a_user) {
             return res.status(404).json({
                 success: false,
                 message: "User doesnt exist: Please signup before login",
             });
         }
-        const comparePassword = await bcrypt.compare(password, already_a_user.password);
+        const comparePassword = yield bcryptjs_1.default.compare(password, already_a_user.password);
         if (!comparePassword) {
             console.log("Incorrect password");
             return res.status(400).json({
@@ -77,16 +96,19 @@ const verifyUserHandler = async (req, res) => {
             });
         }
         const jwtSecret = process.env.JWT_SECRET;
+        if (!jwtSecret) {
+            throw new Error("JWT_SECRET is not defined in environment variables");
+        }
         const payload = {
             userId: already_a_user._id
         };
-        let authToken = jwt.sign(payload, jwtSecret);
+        let authToken = jsonwebtoken_1.default.sign(payload, jwtSecret);
         const cookieOptions = {
             expires: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
-            httpOnly: true,
+            httpOnly: false,
             secure: true,
             path: "/",
-            samesite: "none",
+            samesite: "Lax",
         };
         res.cookie("UserCookie", authToken, cookieOptions);
         return res.status(200).json({
@@ -101,7 +123,8 @@ const verifyUserHandler = async (req, res) => {
             message: "Internal Server Error",
         });
     }
-};
+});
+exports.verifyUserHandler = verifyUserHandler;
 const logoutHandler = (req, res) => {
     const authToken = req.cookies && req.cookies.UserCookie;
     if (!authToken) {
@@ -131,6 +154,7 @@ const logoutHandler = (req, res) => {
         });
     }
 };
+exports.logoutHandler = logoutHandler;
 const loginStatusHandler = (req, res) => {
     console.log("Check Login Status");
     const authToken = req.cookies && req.cookies.UserCookie;
@@ -142,7 +166,10 @@ const loginStatusHandler = (req, res) => {
     }
     try {
         const jwtSecret = process.env.JWT_SECRET;
-        jwt.verify(authToken, jwtSecret);
+        if (!jwtSecret) {
+            throw new Error("JWT_SECRET is not defined in environment variables");
+        }
+        jsonwebtoken_1.default.verify(authToken, jwtSecret);
         return res.status(200).json({
             success: true,
             message: "User authentication successful"
@@ -155,5 +182,4 @@ const loginStatusHandler = (req, res) => {
         });
     }
 };
-export { createUserHandler, verifyUserHandler, logoutHandler, loginStatusHandler };
-//# sourceMappingURL=User.js.map
+exports.loginStatusHandler = loginStatusHandler;

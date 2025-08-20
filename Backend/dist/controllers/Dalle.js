@@ -5,6 +5,7 @@ const openai = new OpenAI({
 });
 const generateImageController = async (req, res) => {
     const { prompt } = req.body;
+    console.log(openai.apiKey);
     try {
         const response = await openai.images.generate({
             model: "dall-e-2",
@@ -20,7 +21,7 @@ const generateImageController = async (req, res) => {
         });
     }
     catch (err) {
-        console.error(err);
+        // console.error(err);
         res.status(500).json({
             success: false,
             message: "internal server error",

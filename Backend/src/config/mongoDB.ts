@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import 'dotenv/config'
 
-const mongoURI = process.env.MONGO_URI
+const mongoURI = process.env.MONGO_URI || ''
 
 const connectDB = async() => {
     mongoose.set('strictQuery', true)

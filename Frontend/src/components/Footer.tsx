@@ -6,7 +6,7 @@ import animation2 from '../lotties/Animation2.json'
 
 function Footer() {
   return (
-    <section className='p-4 sm:px-7 sm:py-2 bg-[rgb(230,230,230)] outline outline-gray-300 outline-[5px] font-montserrat h-40'>
+    <section className='bottom-0 p-4 sm:px-7 sm:py-2 bg-[rgb(230,230,230)] outline outline-gray-300 outline-[5px] font-montserrat h-40'>
       <article className='w-full mx-auto max-w-7xl flex justify-between items-center'>
         <div className='flex flex-col'>
             <img className='-ml-5 aspect-[16/9] w-44' src={logo} alt="ai-pic logo" />

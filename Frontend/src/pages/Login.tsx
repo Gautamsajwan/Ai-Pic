@@ -27,7 +27,7 @@ function Login() {
     e.preventDefault()
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/verifyUser`, {
+      const response = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/login`, {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
@@ -60,7 +60,7 @@ function Login() {
       <div className="mt-1 p-8 w-[90%] sm:w-fit rounded-lg bg-gray-800/70">
         <form className="w-full sm:w-[500px] flex flex-col gap-2">
           <label htmlFor="email" className="font-bold pl-1 text-lg">Email</label>
-          <input type="text" id="email" value={email} onChange={(e) => setEmail(e.target.value)} className="textField" placeholder='enter your email' />
+          <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} className="textField" placeholder='enter your email' />
 
           <label htmlFor="password" className="pl-1 font-bold mt-2 text-lg">Password</label>
           <div className="relative flex flex-col">

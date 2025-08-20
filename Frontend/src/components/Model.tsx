@@ -7,7 +7,7 @@ type props = {
 
 function Model({handleYes, handleNo}: props) {
   return (
-    <section onClick={handleNo} className='backdrop-blur-sm outline h-screen w-screen top-0 left-0 z-20 fixed flex justify-center items-center'>
+    <section onClick={handleNo} className='backdrop-blur-sm backdrop-brightness-90 outline h-screen w-screen top-0 left-0 z-20 fixed flex justify-center items-center'>
         <div className='bg-[rgb(29,32,36)] flex flex-col justify-evenly gap-5 px-7 h-40 rounded-xl'>
             <h1 className='text-white font-bold text-3xl'>Are you sure?</h1>
 

@@ -1,32 +1,46 @@
-import express from 'express';
-import cors from 'cors';
-import 'dotenv/config';
-import connectDB from './config/mongoDB.js';
-import cookieParser from 'cookie-parser';
-import dalleRoutes from './routes/dalleRoutes.js';
-import postRoutes from './routes/postRoutes.js';
-import authRoutes from './routes/authRoutes.js';
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const cors_1 = __importDefault(require("cors"));
+require("dotenv/config");
+const mongoDB_1 = __importDefault(require("./config/mongoDB"));
+const cookie_parser_1 = __importDefault(require("cookie-parser"));
+const imageRoutes_1 = __importDefault(require("./routes/imageRoutes"));
+const postRoutes_1 = __importDefault(require("./routes/postRoutes"));
+const authRoutes_1 = __importDefault(require("./routes/authRoutes"));
 const port = process.env.PORT || 5000;
-const app = express();
+const app = (0, express_1.default)();
 // middlewares
-app.use(cors({
-    origin: [process.env.CORS_ORIGIN],
+app.use((0, cors_1.default)({
+    origin: process.env.CORS_ORIGIN,
     methods: ["POST", "GET", "PUT", "DELETE"],
     credentials: true,
     exposedHeaders: ["Set-Cookie"]
 }));
-app.use(express.json({ limit: '50mb' }));
-app.use(cookieParser());
+app.use(express_1.default.json({ limit: '50mb' }));
+app.use((0, cookie_parser_1.default)());
 // routes
 app.get('/', (req, res) => {
     res.send("hello world");
 });
-app.use('/dalle', dalleRoutes);
-app.use('/post', postRoutes);
-app.use('/auth', authRoutes);
-const startServer = async () => {
+app.use('/dalle', imageRoutes_1.default);
+app.use('/post', postRoutes_1.default);
+app.use('/auth', authRoutes_1.default);
+const startServer = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        connectDB();
+        (0, mongoDB_1.default)();
         app.listen(port, () => {
             console.log(`server is listening on http://localhost:${port}`);
         });
@@ -34,6 +48,5 @@ const startServer = async () => {
     catch (err) {
         console.error(err);
     }
-};
+});
 startServer();
-//# sourceMappingURL=index.js.map

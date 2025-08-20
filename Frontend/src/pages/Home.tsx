@@ -1,18 +1,27 @@
 import { useEffect, useState } from "react";
 import { Loader, FormField, RenderCards } from "../components";
 import { toast } from "react-toastify";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 type Props = {};
 
 type Post = {
   _id: string,
-  name: string,
+  userName: string,
   prompt: string,
-  photo: string
+  photoUrl: string,
+  photoId: string,
+  tags: [string]
 }
 
 function Home({}: Props) {
+  const navigate = useNavigate()
+  const [loading, setloading] = useState<boolean>(false);
+  const [allPosts, setallPosts] = useState<Post[]>([]);
+  const [searchText, setsearchText] = useState<string>('');
+  const [searchTimeoutID, setSearchTimeoutID] = useState<number | null>(null);
+  const [searchedResults, setSearchedResults] = useState<Post[]>([]);
+
   useEffect(() => {
     const getAllPosts = async() => {
       try {
@@ -26,17 +35,23 @@ function Home({}: Props) {
         })
         
         const result = await response.json()
+        console.log(result)
         
-        // if(response.status === 401) {
-        //   navigate('/login')
-        //   toast.error(result.message)
-        //   return
-        // }
+        if(response.status === 401) {
+          navigate('/login')
+          toast.error(result.message)
+          return
+        }
         if(response.status === 500) {
           toast.error(result.message)
           return
         }
-  
+        
+        // let tempArr: Post[] = []
+        // for(let i=0; i<result.data.length; i++) {
+        //   tempArr.push(result.data[i])
+        // }
+        // setallPosts(tempArr)
         setallPosts(result.data.reverse())
       } catch (err: any) {
         toast.error(err.message)
@@ -48,13 +63,6 @@ function Home({}: Props) {
     getAllPosts()
   },[])
 
-  // const navigate = useNavigate()
-  const [loading, setloading] = useState<boolean>(false);
-  const [allPosts, setallPosts] = useState<Post[]>([]);
-  const [searchText, setsearchText] = useState<string>('');
-  const [searchTimeoutID, setSearchTimeoutID] = useState<number | null>(null);
-  const [searchedResults, setSearchedResults] = useState<Post[]>([]);
-
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if(searchTimeoutID) {
       clearTimeout(searchTimeoutID);
@@ -64,8 +72,9 @@ function Home({}: Props) {
 
     setSearchTimeoutID(
       setTimeout(() => {
-        const searchResult = allPosts.filter((item) => item.name.toLowerCase().includes(searchText.toLowerCase()) || item.prompt.toLowerCase().includes(searchText.toLowerCase()));
+        const searchResult = allPosts.filter((item) => item.userName.toLowerCase().includes(searchText.toLowerCase()) || item.prompt.toLowerCase().includes(searchText.toLowerCase()));
         setSearchedResults(searchResult);
+        console.log(searchResult)
       }, 500)
     );
   }
@@ -104,9 +113,9 @@ function Home({}: Props) {
             )}
             <div className="mb-5 px-3 py-3 bg-[rgb(236,236,238)] rounded-2xl grid lg:grid-cols-4 sm:grid-cols-3 xs:grid-cols-2 grid-cols-1 gap-3 max-h-screen overflow-auto exceeding-dark">
               {searchText ? (
-                <RenderCards data={searchedResults} title="no search results found" />
+                <RenderCards profileView={false} data={searchedResults} title="no search results found" />
               ) : (
-                <RenderCards data={allPosts} title="no posts yet" />
+                <RenderCards profileView={false} data={allPosts} title="no posts yet" />
               )}
             </div>
           </div>

@@ -1,18 +1,18 @@
 import express from 'express'
 import cors from 'cors'
 import 'dotenv/config'
-import connectDB from './config/mongoDB.js'
+import connectDB from './config/mongoDB'
 import cookieParser from 'cookie-parser'
-import dalleRoutes from './routes/dalleRoutes.js'
-import postRoutes from './routes/postRoutes.js'
-import authRoutes from './routes/authRoutes.js'
+import dalleRoutes from './routes/imageRoutes'
+import postRoutes from './routes/postRoutes'
+import authRoutes from './routes/authRoutes'
 
 const port = process.env.PORT || 5000
 const app = express()
 
 // middlewares
 app.use(cors({
-    origin: [process.env.CORS_ORIGIN],
+    origin: process.env.CORS_ORIGIN,
     methods: ["POST", "GET", "PUT", "DELETE"],
     credentials: true,
     exposedHeaders: ["Set-Cookie"]

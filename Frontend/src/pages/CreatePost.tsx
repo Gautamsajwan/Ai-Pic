@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getRandomPrompt } from '../utils'
 import { FormField } from '../components'
@@ -11,8 +11,34 @@ import animation4 from '../lotties/Animation4.json'
 type Props = {}
 
 function CreatePost({}: Props) {
+  useEffect(() => {
+    const verifyUser = async() => {
+      try {
+        const response = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/checkAuthStatus`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include'
+        })
+
+        const result = await response.json()
+
+        if(response.status === 401) {
+          navigate('/login')
+          toast.error(result.message)
+          return
+        }
+      } catch (error: any) {
+        toast.error(error.message)
+      }
+    }
+
+    verifyUser()
+  }, [])
+  
   const [form, setForm] = useState({
-    name: '',
+    userName: '',
     prompt: '',
     photo: '',
   });
@@ -104,9 +130,9 @@ function CreatePost({}: Props) {
             <FormField 
               labelName='Your Name'
               type='text'
-              name='name'
+              name='userName'
               placeholder='John doe'
-              value={form.name}
+              value={form.userName}
               handleChange={handleChange}
             />
             <FormField 

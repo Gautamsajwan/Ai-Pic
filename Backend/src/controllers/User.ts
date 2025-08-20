@@ -1,4 +1,4 @@
-import User from '../models/user.js'
+import UserModel from '../models/user'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { Request, Response } from 'express'
@@ -14,7 +14,7 @@ const createUserHandler = async (req: Request, res: Response) => {
         })
     }
 
-    let already_a_user = await User.findOne({ email: email });
+    let already_a_user = await UserModel.findOne({ email: email });
     if (already_a_user) {
         return res.status(400).json({ 
             success: false,
@@ -26,7 +26,7 @@ const createUserHandler = async (req: Request, res: Response) => {
         const salt = bcrypt.genSaltSync(10)
         const encryptedPassword = await bcrypt.hash(password, salt);
 
-        const newUser = await User.create({
+        const newUser = await UserModel.create({
             username,
             email,
             password: encryptedPassword,
@@ -34,18 +34,23 @@ const createUserHandler = async (req: Request, res: Response) => {
 
         console.log(newUser)
 
-        const jwtSecret = process.env.JWT_SECRET
+        const jwtSecret = process.env.JWT_SECRET;
+
+        if (!jwtSecret) {
+            throw new Error("JWT_SECRET is not defined in environment variables");
+        }
+
         const payload = { // storing the details of the newly created user in the token
             userId: newUser._id
         }
-        let authToken = jwt.sign(payload, jwtSecret) // will return the created token
+        let authToken = jwt.sign(payload, jwtSecret) // jwt.sign method will return the created token
 
         const cookieOptions = {
             expires: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
             httpOnly: true,
-            secure: true,
+            secure: false,
             path: "/",
-            samesite: "none",
+            samesite: "Lax",
         };
         res.cookie("UserCookie", authToken, cookieOptions)
 
@@ -73,7 +78,7 @@ const verifyUserHandler = async (req: Request, res: Response) => {
     }
 
     try {
-        const already_a_user = await User.findOne({ email: email });
+        const already_a_user = await UserModel.findOne({ email: email });
         if (!already_a_user) {
             return res.status(404).json({
                 success: false,
@@ -91,6 +96,11 @@ const verifyUserHandler = async (req: Request, res: Response) => {
         }
 
         const jwtSecret = process.env.JWT_SECRET;
+
+        if (!jwtSecret) {
+            throw new Error("JWT_SECRET is not defined in environment variables");
+        }
+
         const payload = {
             userId: already_a_user._id
         };
@@ -98,10 +108,10 @@ const verifyUserHandler = async (req: Request, res: Response) => {
 
         const cookieOptions = {
             expires: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
-            httpOnly: true,
+            httpOnly: false,
             secure: true,
             path: "/",
-            samesite: "none",
+            samesite: "Lax",
         };
         res.cookie("UserCookie", authToken, cookieOptions)
 
@@ -110,10 +120,10 @@ const verifyUserHandler = async (req: Request, res: Response) => {
             message: "Successfully Logged in",
             jwt: authToken
         });
-    } catch (err) {
+    } catch (err: any) {
         return res.status(500).json({
             success: false,
-            message: "Internal Server Error",
+            message: err.message,
         });
     }
 }
@@ -164,13 +174,18 @@ const loginStatusHandler = (req: Request, res: Response) => {
 
     try {
         const jwtSecret = process.env.JWT_SECRET
+
+        if (!jwtSecret) {
+            throw new Error("JWT_SECRET is not defined in environment variables");
+        }
+
         jwt.verify(authToken, jwtSecret)
 
         return res.status(200).json({ 
             success: true, 
             message: "User authentication successful" 
         })
-    } catch (err) {
+    } catch (err: any) {
         return res.status(401).json({
             sucess: false,
             message: err.message,

@@ -1,6 +1,11 @@
-import mongoose from 'mongoose';
-const postSchema = new mongoose.Schema({
-    name: {
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const mongoose_1 = __importDefault(require("mongoose"));
+const postSchema = new mongoose_1.default.Schema({
+    userName: {
         type: String,
         required: [true, "please enter your name"]
     },
@@ -8,11 +13,17 @@ const postSchema = new mongoose.Schema({
         type: String,
         required: [true, "please enter a prompt"]
     },
-    photo: {
+    photoUrl: {
         type: String,
-        required: [true, "please generate a photo before posting"]
-    }
+        required: true
+    },
+    photoId: {
+        type: String,
+        required: true
+    },
+    tags: [{
+            type: String,
+        }]
 });
-const postModel = mongoose.model('post', postSchema);
-export default postModel;
-//# sourceMappingURL=post.js.map
+const PostModel = mongoose_1.default.model('post', postSchema);
+exports.default = PostModel;
