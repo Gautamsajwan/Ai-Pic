@@ -120,7 +120,7 @@ const verifyUserHandler = (req, res) => __awaiter(void 0, void 0, void 0, functi
     catch (err) {
         return res.status(500).json({
             success: false,
-            message: "Internal Server Error",
+            message: err.message,
         });
     }
 });
