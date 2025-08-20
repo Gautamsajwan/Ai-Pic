@@ -12,11 +12,20 @@ const app = express()
 
 // middlewares
 app.use(cors({
-    origin: process.env.CORS_ORIGIN,
-    methods: ["POST", "GET", "PUT", "DELETE"],
-    credentials: true,
-    exposedHeaders: ["Set-Cookie"]
-}))
+  origin: function (origin, callback) {
+    console.log('Origin:', origin);
+    console.log('CORS_ORIGIN env:', process.env.CORS_ORIGIN);
+    
+    if (origin === process.env.CORS_ORIGIN) {
+      callback(null, true);
+    } else {
+      callback(new Error(`Origin ${origin} not allowed by CORS`));
+    }
+  },
+  methods: ["POST", "GET", "PUT", "DELETE"],
+  credentials: true,
+  exposedHeaders: ["Set-Cookie"]
+}));
 app.use(express.json({limit: '50mb'}))
 app.use(cookieParser())
 
