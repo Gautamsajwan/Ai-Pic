@@ -11,6 +11,16 @@ import mongoose from "mongoose";
 const port = process.env.PORT || 5000;
 const app = express();
 
+app.use((req, res, next) => {
+  if (mongoose.connection.readyState !== 1) {
+    return res.status(503).json({
+      success: false,
+      message: "Database connection not ready. Please try again.",
+    });
+  }
+  next();
+});
+
 // middlewares
 app.use(
   cors({
