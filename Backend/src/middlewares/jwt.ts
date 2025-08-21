@@ -3,7 +3,6 @@ import { Request, Response, NextFunction } from 'express'
 
 const fetchUser = (req: Request, res: Response, next: NextFunction) => {
     const authToken = req.cookies && req.cookies.UserCookie
-    // console.log("Middleware for checking user: ", authToken)
 
     if (!authToken) {
         return res.status(401).json({
@@ -19,12 +18,14 @@ const fetchUser = (req: Request, res: Response, next: NextFunction) => {
             throw new Error("JWT secret is not defined")
         }
 
-        jwt.verify(authToken, jwtSecret); // throws an error if jwt token is tampered
+        const decoded = jwt.verify(authToken, jwtSecret); // throws an error if jwt token is tampered
+        console.log("JWT verified successfully for user:", decoded)
         
         next()
     } catch (err: any) {
+        console.error("JWT verification failed:", err.message)
         return res.status(401).json({
-            sucess: false,
+            success: false,
             message: err.message,
         })
     }

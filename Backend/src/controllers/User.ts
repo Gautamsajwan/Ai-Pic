@@ -1,7 +1,7 @@
 import UserModel from '../models/user'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-import { Request, Response } from 'express'
+import { Request, Response, CookieOptions } from 'express'
 import 'dotenv/config'
 
 const createUserHandler = async (req: Request, res: Response) => {
@@ -45,13 +45,15 @@ const createUserHandler = async (req: Request, res: Response) => {
         }
         let authToken = jwt.sign(payload, jwtSecret) // jwt.sign method will return the created token
 
-        const cookieOptions = {
+        const isProduction = process.env.NODE_ENV === 'production'
+        const cookieOptions: CookieOptions = {
             expires: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
             httpOnly: true,
-            secure: false,
+            secure: isProduction,
             path: "/",
-            samesite: "Lax",
+            sameSite: isProduction ? "none" : "lax"
         };
+        
         res.cookie("UserCookie", authToken, cookieOptions)
 
         return res.status(200).json({
@@ -106,13 +108,15 @@ const verifyUserHandler = async (req: Request, res: Response) => {
         };
         let authToken = jwt.sign(payload, jwtSecret);
 
-        const cookieOptions = {
+        const isProduction = process.env.NODE_ENV === 'production'
+        const cookieOptions: CookieOptions = {
             expires: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
-            httpOnly: false,
-            secure: true,
+            httpOnly: true,
+            secure: isProduction,
             path: "/",
-            samesite: "Lax",
+            sameSite: isProduction ? "none" : "lax"
         };
+        
         res.cookie("UserCookie", authToken, cookieOptions)
 
         return res.status(200).json({
@@ -141,12 +145,14 @@ const logoutHandler = (req: Request, res: Response) => {
     try {
         console.log("LogOut Endpoint")
 
-        const cookieOptions = {
+        const isProduction = process.env.NODE_ENV === 'production'
+        const cookieOptions: CookieOptions = {
             expires: new Date(Date.now() - 1),
-            secure: true,
             httpOnly: true,
+            secure: isProduction,
             path: "/",
-            samesite: "none"
+            sameSite: isProduction ? "none" : "lax",
+            ...(isProduction && { domain: process.env.COOKIE_DOMAIN })
         };
 
         return res.clearCookie("UserCookie", cookieOptions).status(200).json({
