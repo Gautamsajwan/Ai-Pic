@@ -15,7 +15,7 @@ const connectDB = async () => {
       maxPoolSize: 10,
       retryWrites: true,
       retryReads: true,
-      bufferCommands: false
+    //   bufferCommands: false
     });
     isConnected = true;
     console.log(`Database connected to ${response.connection.host}`);
