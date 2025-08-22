@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import { BiHome, BiImageAdd } from "react-icons/bi";
-import { FiGrid } from "react-icons/fi";
-import { RenderCards } from "../components";
 import { useNavigate } from "react-router-dom";
 
 type Props = {};
@@ -19,6 +17,8 @@ function PersonalProfile({}: Props) {
   const [userPosts, setUserPosts] = useState<Post[]>([]);
   const nav = useNavigate()
 
+  
+
   useEffect(() => {
     const getUserPosts = async () => {
       try {
@@ -30,13 +30,14 @@ function PersonalProfile({}: Props) {
               "content-type": "application/json",
             },
             body: JSON.stringify({
-              userName: "Gautam",
+              username: "Gautam",
             }),
             credentials: "include",
           }
         );
 
         const result = await response.json();
+        console.log(result)
         setUserPosts(result.postArray);
       } catch (err) {
         console.log(err);
@@ -64,9 +65,8 @@ function PersonalProfile({}: Props) {
       </div>
       {/* rest of the section showing profile info and posts*/}
       <div className="pb-[60px] flex flex-col gap-2 overflow-auto w-full md:w-[80%] lg:w-[85%]">
-        {/* Details section like username, no. of posts, dp, bio etc*/}
-        {/* post section */}
-        <div className="ml-4 mt-4 w-fit flex items-center gap-2 bg-gray-300 px-4 py-3 rounded-full">
+        {/* Work on the commented section to profile related info such as user posts */}
+        {/* <div className="ml-4 mt-4 w-fit flex items-center gap-2 bg-gray-300 px-4 py-3 rounded-full">
           <FiGrid className="w-7 h-7"/>
           <h2 className="text-xl font-semibold">All posts</h2>
         </div>
@@ -76,7 +76,9 @@ function PersonalProfile({}: Props) {
             data={userPosts}
             title="you haven't posted yet"
           />
-        </div>
+        </div> */}
+
+        <h1 className="p-4 font-semibold text-lg">This feature will release soon...</h1>
       </div>
     </section>
   );

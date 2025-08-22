@@ -18,8 +18,7 @@ const fetchUser = (req: Request, res: Response, next: NextFunction) => {
             throw new Error("JWT secret is not defined")
         }
 
-        const decoded = jwt.verify(authToken, jwtSecret); // throws an error if jwt token is tampered
-        console.log("JWT verified successfully for user:", decoded)
+        jwt.verify(authToken, jwtSecret); // throws an error if jwt token is tampered
         
         next()
     } catch (err: any) {

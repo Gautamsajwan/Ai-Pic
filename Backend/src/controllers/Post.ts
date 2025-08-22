@@ -59,12 +59,13 @@ const createPostController = async (req: Request, res: Response): Promise<void> 
 
 const getUserPostController = async(req: Request, res: Response): Promise<Response> => {
     try {
-        const { userName } = req.body
-        const user = await UserModel.findOne({ userName }).populate('PostArray')
+        const { username } = req.body
+
+        const user = await UserModel.findOne({ username }).populate('PostArray')
 
         return res.status(200).json({
             success: true,
-            message: 'Posts retreived successfully',
+            message: 'Posts retreived',
             postArray: user?.PostArray
         })
     } catch (error: any) {
