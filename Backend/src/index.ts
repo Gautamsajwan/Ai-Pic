@@ -24,7 +24,18 @@ app.use((req, res, next) => {
 // middlewares
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN,
+    origin: function (origin, callback) {
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+      
+      const allowedOrigins = process.env.CORS_ORIGIN?.split(',') || [];
+      
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      } else {
+        return callback(new Error('Not allowed by CORS'));
+      }
+    },
     methods: ["POST", "GET", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
     exposedHeaders: ["Set-Cookie"],
@@ -34,7 +45,11 @@ app.use(
       "X-Requested-With",
       "Accept",
       "Origin",
+      "Cookie"
     ],
+    // Add preflight handling
+    preflightContinue: false,
+    optionsSuccessStatus: 204
   })
 );
 app.use(express.json({ limit: "50mb" }));
