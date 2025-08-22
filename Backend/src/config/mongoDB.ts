@@ -11,11 +11,9 @@ const connectDB = async () => {
     const response = await mongoose.connect(mongoURI, {
       dbName: 'AiImageGenerator',
       serverSelectionTimeoutMS: 30000,
-      socketTimeoutMS: 45000,
       maxPoolSize: 10,
       retryWrites: true,
       retryReads: true,
-    //   bufferCommands: false
     });
     isConnected = true;
     console.log(`Database connected to ${response.connection.host}`);
